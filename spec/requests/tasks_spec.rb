@@ -16,7 +16,7 @@ RSpec.describe 'Task management', type: :request do
         }
       }
     }.to_json,
-    headers: { "CONTENT_TYPE" => "application/json" }
+    headers: { 'CONTENT_TYPE' => 'application/json' }
     expect(response.body).to have_json_path('data/attributes/title')
     expect(parse_json(response.body, 'data/attributes/title')).to eq('bar')
   end
@@ -30,7 +30,24 @@ RSpec.describe 'Task management', type: :request do
         }
       }
     }.to_json,
-      headers: { "CONTENT_TYPE" => "application/json" }
+    headers: { 'CONTENT_TYPE' => 'application/json' }
     expect(response.body).to have_json_path('data/relationships/tags/data/0/')
+  end
+
+  it 'updated a task with tags' do
+    task = Task.create(title: 'foo')
+    patch "/api/v1/tasks/#{task[:id]}", params: {
+      data: {
+        type: 'tasks',
+        id: task[:id],
+        attributes: {
+          title: 'bar',
+          tags: ['tag']
+        }
+      }
+    }.to_json,
+    headers: { 'CONTENT_TYPE' => 'application/json' }
+    expect(parse_json(response.body, 'data/attributes/title')).to eq('bar')
+    expect(parse_json(response.body, 'data/relationships/tags/data/0/id').to_i).to be > 0
   end
 end
