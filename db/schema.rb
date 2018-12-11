@@ -12,12 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2018_12_04_175141) do
 
-  create_table "posts", force: :cascade do |t|
-    t.string "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "tags", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
